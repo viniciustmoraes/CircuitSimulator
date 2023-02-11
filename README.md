@@ -1,6 +1,22 @@
-# CircuitSimulator
-This project aims to develop a simulation tool for circuits, capable of interpreting the system, constructing the associated equations and solving them, in order to provide the time response of the system. An interactive GUI will be developed, aiming to permit the construction of circuits be means of drag and drop of electronic components.
+# Circuit Simulation Software
 
-Initially, we aim at solving purely resistive circuits with voltage sources. For the next steps, the analysis of circuits with differential elements will be performed.
+This project aims to develop a circuit simulation tool, capable of interpreting and analyzing the behavior of electrical circuits. The software will be able to construct the equations associated with a given circuit, solve them, and provide the time response of the system. 
 
-Numerical calculations will be performed using the C++ language,, while future analysis will determine which tools will be used for the GUI description and integration with the code.
+The project is being developed as a collaboration between two undergraduate students majoring in electrical engineering. The software will be developed from scratch and will be designed to be user-friendly and accessible to all levels of users.
+
+## Key Features
+
+- Circuit construction using drag and drop of electronic components
+- Ability to analyze resistive circuits with voltage sources
+- Time response of the circuit 
+- Numerical calculations using C++ language 
+- User-friendly interface for circuit construction and analysis
+
+## Future Goals
+
+- Analysis of circuits with differential elements, such as inductors, capacitors and more advanced elements (e.g. transistors and diodes)
+- Integration of GUI with the code 
+
+## Contributions
+
+We welcome contributions to the project in any form, be it bug fixes, new features or improvements to the existing code. If you would like to contribute, please fork the repository and submit a pull request.
