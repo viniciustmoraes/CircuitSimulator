@@ -16,7 +16,3 @@ The project is being developed as a collaboration between two undergraduate stud
 
 - Analysis of circuits with differential elements, such as inductors, capacitors and more advanced elements (e.g. transistors and diodes)
 - Integration of GUI with the code 
-
-## Contributions
-
-We welcome contributions to the project in any form, be it bug fixes, new features or improvements to the existing code. If you would like to contribute, please fork the repository and submit a pull request.
