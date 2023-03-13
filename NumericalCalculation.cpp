@@ -14,7 +14,12 @@ class Graph {
         void set_nodes(int n){
             // Update the number of nodes, and resize the adj matrix to be N x N. 
             n_nodes = n;
-            adjacency_matrix.resize(n_nodes, vector<int>(n_nodes));
+            adjacency_matrix.resize(n_nodes);
+
+            for (int i = 0; i < n_nodes; ++i){
+                adjacency_matrix[i].resize(n_nodes);
+            }
+
         };
 
         void add_connection(int A, int B, int X){
@@ -62,32 +67,41 @@ class Graph {
 };
 
 /*
-class Circuit : public Graph {
-    public:
+class Circuit {
+    private:
         int n_nodes;
-        vector<vector<string> > circuit_matrix;
+        Graph magnitude_matrix;
+        Graph type_matrix;
+    
+    public:
 
-        Circuit(int n){
-            Graph(n);
+        Circuit(int n, Graph mag = Graph(0), Graph typ = Graph(0)){
+            Graph x(n);
         };
              
 
 }; 
 */
 
-
 int main() {
 
     Graph teste(5);
+    Graph Tesste = 0;
     
     teste.set_matrix_values(0);
 
-    teste.add_connection(1,2, 10);
-    teste.add_connection(3,4,20);
+    //teste.add_connection(1,2, 10);
+   // teste.add_connection(3,4,20);
     teste.set_diagonal(45);
 
+    teste.print_adj_matrix();
+    cout << endl << "===========" << endl << endl;
+
+    teste.set_nodes(3);
+    
     teste.print_adj_matrix();
     
 
    return 0;
 }
+
