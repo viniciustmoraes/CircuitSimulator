@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 using namespace std;
 
 class Graph {
@@ -61,32 +62,88 @@ class Graph {
             };
 
     private:
-        vector<vector<int> > adjacency_matrix;   // Describes the connections of the respective nodes. If adj[i][j] = 'xxx', then nodes i and j are connected by means of a 'xxx' element.
+        vector<vector<int> > adjacency_matrix;   // Describes the connections of the respective nodes
 
 
 };
 
-/*
+
 class Circuit {
     private:
-        int n_nodes;
-        Graph magnitude_matrix;
-        Graph type_matrix;
+        Graph magnitude_matrix; // magnitude_matrix[i][j] encodes the magnitude of the element connecting nodes i and j
+        Graph type_matrix;      // type_matrix[i][j] encodes the type of the element connecting nodes i and j
+        
+        /*
+
+        The following convention is used for the element types:
+
+
+        0 - Default value (No connection between nodes)
+        1 - Wire / Short-circuit
+        2 - Resistor
+        3 - Capacitor
+        4 - Inductor
+        5 - Voltage source
+        6 - Current source
+        
+        */
     
     public:
-
+        int n_nodes;
+        
         Circuit(int n, Graph mag = Graph(0), Graph typ = Graph(0)){
-            Graph x(n);
+            n_nodes = n;
+            int n_m = mag.n_nodes;
+            int n_t = typ.n_nodes;
+
+            if (n_m != n_t){ throw invalid_argument("Adjacency matrices do not share the same size"); }
+            else if (n_nodes <= 0){ throw invalid_argument("Number of nodes must be bigger than 0"); }
+            else if (n_m == 0){ mag.set_nodes(n_nodes); typ.set_nodes(n_nodes); }
+            
+            magnitude_matrix = mag;
+            type_matrix = typ;
+            
+            };
+
+        bool verify(){
+            /* 
+            Verify the integrity of the circuit:
+            - Adjacency matrices have the same size, equal to n_nodes.
+            - Every filled element of the first adjacency matrix corresponds to a filled element of the second adjacency matrix
+            and vice versa
+            
+            -> Returns true if the Circuit passes the test, false otherwise
+            */
+            bool state = true;
+            
+            //First condition
+            if (magnitude_matrix.n_nodes != type_matrix.n_nodes || magnitude_matrix.n_nodes != n_nodes){ state = false; }
+
+            //Second condition
+            else{
+
+            for (int i = 0 ; i < n_nodes ; i++ ){
+                for (int j = 0 ; j < n_nodes ; j++){
+                    if (magnitude_matrix[i][j] != 0 & type_matrix[i][j] == 0){ state = false; }
+                    else if (type_matrix[i][j] != 0 & magnitude_matrix[i][j] == 0){ state = false; }
+                    };
+                };
+            
+            }
+
+            return state;
         };
-             
+
+        void simplify(){
+
+        };            
 
 }; 
-*/
+
 
 int main() {
 
     Graph teste(5);
-    Graph Tesste = 0;
     
     teste.set_matrix_values(0);
 
