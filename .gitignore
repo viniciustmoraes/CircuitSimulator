@@ -1,1 +1,6 @@
 .out
+.vscode/settings.json
+numerical_exe
+.gitignore
+NumericalCalculation.dSYM/Contents/Info.plist
+.vscode/tasks.json

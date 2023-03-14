@@ -158,13 +158,11 @@ class Circuit {
         };            
 
 
-        // DEBUG THIS FUNCTION 
-
         void add_connection(int A, int B, char element_type, float magnitude){
             // Adds a simple connection to nodes A and B, of type and magnitude specified.
             
-            // Define mapping dictionary
-            std::map<char, int> type_map {
+            // Define mapping dictionary. Requires c++ 11 or greater. Use flag -std=c++17
+            map<char, int> type_map {
                 {'w', 1},  // Wire | Short-circuit
                 {'r', 2},  // Resistor
                 {'c', 3},  // Capacitor
@@ -209,8 +207,8 @@ int main() {
 
     Circuit Test = Circuit(4);
 
-    //Test.add_connection(0,2, 'r', 10);
-    //Test.add_connection(2,3, 'w', 4);
+    Test.add_connection(0,2, 'r', 10);
+    Test.add_connection(2,3, 'w', 4);
 
 
     // ======================== PRINTING ========================== 
