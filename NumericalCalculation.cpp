@@ -150,16 +150,21 @@ class Circuit {
 
             return state;
         };
+        
+
 
         void simplify(){
 
         };            
 
+
+        // DEBUG THIS FUNCTION 
+
         void add_connection(int A, int B, char element_type, float magnitude){
             // Adds a simple connection to nodes A and B, of type and magnitude specified.
             
             // Define mapping dictionary
-            map<char, int> type_map {
+            std::map<char, int> type_map {
                 {'w', 1},  // Wire | Short-circuit
                 {'r', 2},  // Resistor
                 {'c', 3},  // Capacitor
@@ -168,10 +173,11 @@ class Circuit {
                 {'i', 6}   // Current source
             };
 
+
             // Check if the connection type is valid
             if (type_map.count(element_type) == 0) {
                 throw std::invalid_argument("Invalid connection type");
-            }
+            };
 
             int type_code = type_map[element_type];
             
@@ -194,48 +200,20 @@ class Circuit {
             }
         
         };
-
-
-}; 
-
+ 
+};
 
 int main() {
 
-    /*
-    Circuit Test = Circuit(5);
+    // ================= CIRCUIT INITIALIZATION =================== 
 
-    cout << endl << "The current size of the circuit is: " << Test.n_nodes << endl << endl;
-    cout << "The magnitude matrix of the circuit is: " << endl;
-    Test.magnitude_matrix.print_adj_matrix();
-    
-    cout << endl;
+    Circuit Test = Circuit(4);
 
-    cout << "The type matrix of the circuit is: " << endl;
-    Test.type_matrix.print_adj_matrix();
+    //Test.add_connection(0,2, 'r', 10);
+    //Test.add_connection(2,3, 'w', 4);
 
-    cout << endl;
-    
-    */
 
-   cout << endl;
-
-    Graph magnitudes = Graph(3);
-    Graph types = Graph(4);
-
-    magnitudes.set_matrix_values(0);
-    magnitudes.add_edge(1,2,5);
-    magnitudes.set_diagonal(1);
-
-    types.set_matrix_values(1);
-
-    magnitudes.print_adj_matrix();
-    cout << endl << endl;
-    types.print_adj_matrix();
-    cout << endl << endl;
-
-    cout << "=============" << endl;
-
-    Circuit Test = Circuit(2,magnitudes);
+    // ======================== PRINTING ========================== 
 
     cout << endl;
 
@@ -247,5 +225,5 @@ int main() {
     
 
    return 0;
-}
+};
 
