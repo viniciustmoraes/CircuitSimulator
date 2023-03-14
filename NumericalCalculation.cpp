@@ -14,6 +14,10 @@ class Graph {
 
         Graph() : n_nodes(0) {};
 
+        ~Graph() {
+            // Empty destructor
+        };
+
         void set_nodes(int n){
             // Update the number of nodes, and resize the adj matrix to be N x N. 
             n_nodes = n;
@@ -96,15 +100,25 @@ class Circuit {
 
             if (n_nodes <= 0){ throw invalid_argument("Number of nodes must be bigger than 0"); }  
             
-            if (mag.n_nodes == 0 & typ.n_nodes == 0 ) { cout << "caiu aqui"; mag.set_nodes(n_nodes); typ.set_nodes(n_nodes); }
+            if (mag.n_nodes == 0 & typ.n_nodes == 0 ) { mag.set_nodes(n_nodes); typ.set_nodes(n_nodes); }
 
             else if (mag.n_nodes != typ.n_nodes){ throw invalid_argument("Adjacency matrices do not share the same size"); }
-            else if (n_nodes != mag.n_nodes) {throw invalid_argument("Adjacency matrices size does not correspond to number of nodes passed"); }
+            else if (n_nodes != mag.n_nodes) { throw invalid_argument("Adjacency matrices size does not correspond to number of nodes passed"); }
 
             magnitude_matrix = mag;
             type_matrix = typ;
 
             };
+
+        ~Circuit() {
+            // Empty destructor
+        };
+
+        void resize(int n){
+            n_nodes = n;
+            magnitude_matrix.set_nodes(n_nodes);
+            type_matrix.set_nodes(n_nodes);
+        };
 
         bool verify(){
             /* 
@@ -115,6 +129,7 @@ class Circuit {
             
             -> Returns true if the Circuit passes the test, false otherwise
             */
+
             bool state = true;
             
             //First condition
@@ -178,7 +193,7 @@ int main() {
 
     cout << "=============" << endl;
 
-    Circuit Test = Circuit(2);
+    Circuit Test = Circuit(2,magnitudes);
 
     cout << endl;
 
@@ -188,7 +203,8 @@ int main() {
     Test.type_matrix.print_adj_matrix();
     cout << endl << endl;
     
-  
+    
+
    return 0;
 }
 
