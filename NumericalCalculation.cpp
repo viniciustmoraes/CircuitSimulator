@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <map>
 using namespace std;
 
 class Graph {
@@ -29,26 +30,26 @@ class Graph {
 
         };
 
-        void add_connection(int A, int B, float X){
+        void add_edge(int A, int B, float X){
             adj[A][B] = X;
         };
 
-        void add_connection_sym(int A, int B, float X){
-            add_connection(A,B,X);
-            add_connection(B,A,X);
+        void add_edge_sym(int A, int B, float X){
+            add_edge(A,B,X);
+            add_edge(B,A,X);
         };
 
         void set_diagonal(float X){
             // Set diagonal values to the input X
             for (int i = 0; i < n_nodes; i++){
-                add_connection(i,i,X);
+                add_edge(i,i,X);
             };
         };
 
         void set_matrix_values(float X){
             for (int i = 0; i < n_nodes; i++){
                 for (int j = 0; j < n_nodes; j++){
-                    add_connection(i,j,X);
+                    add_edge(i,j,X);
                 };
             };
         };
@@ -84,7 +85,7 @@ class Circuit {
 
 
         0 - Default value (No connection between nodes)
-        1 - Wire / Short-circuit
+        1 - Wire | Short-circuit
         2 - Resistor
         3 - Capacitor
         4 - Inductor
@@ -154,6 +155,47 @@ class Circuit {
 
         };            
 
+        void add_connection(int A, int B, char element_type, float magnitude){
+            // Adds a simple connection to nodes A and B, of type and magnitude specified.
+            
+            // Define mapping dictionary
+            map<char, int> type_map {
+                {'w', 1},  // Wire | Short-circuit
+                {'r', 2},  // Resistor
+                {'c', 3},  // Capacitor
+                {'l', 4},  // Inductor
+                {'v', 5},  // Voltage source
+                {'i', 6}   // Current source
+            };
+
+            // Check if the connection type is valid
+            if (type_map.count(element_type) == 0) {
+                throw std::invalid_argument("Invalid connection type");
+            }
+
+            int type_code = type_map[element_type];
+            
+            // Add connection to the magnitude and type matrices. 
+
+            // Voltage and current sources are considered separately. 
+            // For passive elements, the matrices are filled symmetrically
+            if (element_type != 'v' & element_type != 'i'){
+                magnitude_matrix.add_edge_sym(A, B, magnitude);
+                type_matrix.add_edge_sym(A, B, type_code);
+            }
+            
+            // For active elements, a negative sign is added to the magnitude of connection B -> A
+            else{
+                magnitude_matrix.add_edge(A, B, magnitude);
+                type_matrix.add_edge(A, B, type_code);
+
+                magnitude_matrix.add_edge(B, A, -magnitude);
+                type_matrix.add_edge(B, A, type_code);
+            }
+        
+        };
+
+
 }; 
 
 
@@ -181,7 +223,7 @@ int main() {
     Graph types = Graph(4);
 
     magnitudes.set_matrix_values(0);
-    magnitudes.add_connection(1,2,5);
+    magnitudes.add_edge(1,2,5);
     magnitudes.set_diagonal(1);
 
     types.set_matrix_values(1);
@@ -202,7 +244,6 @@ int main() {
 
     Test.type_matrix.print_adj_matrix();
     cout << endl << endl;
-    
     
 
    return 0;
