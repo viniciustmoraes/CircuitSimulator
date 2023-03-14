@@ -25,23 +25,23 @@ class Graph {
 
         };
 
-        void add_connection(int A, int B, int X){
+        void add_connection(int A, int B, float X){
             adj[A][B] = X;
         };
 
-        void add_connection_sym(int A, int B, int X){
+        void add_connection_sym(int A, int B, float X){
             add_connection(A,B,X);
             add_connection(B,A,X);
         };
 
-        void set_diagonal(int X){
+        void set_diagonal(float X){
             // Set diagonal values to the input X
             for (int i = 0; i < n_nodes; i++){
                 add_connection(i,i,X);
             };
         };
 
-        void set_matrix_values(int X){
+        void set_matrix_values(float X){
             for (int i = 0; i < n_nodes; i++){
                 for (int j = 0; j < n_nodes; j++){
                     add_connection(i,j,X);
@@ -50,8 +50,8 @@ class Graph {
         };
 
         void print_adj_matrix(){
-            for (vector<int> i : adj){
-                for (int j : i){
+            for (vector<float> i : adj){
+                for (float j : i){
                     if (j == 0)
                     { cout << "-";}
                     else 
@@ -63,14 +63,14 @@ class Graph {
                 };
             };
 
-        vector<vector<int> > adj;   // Adjacency Matrix. Describes the connections of the respective nodes
+        vector<vector<float> > adj;   // Adjacency Matrix. Describes the connections of the respective nodes
 
 
 };
 
 
 class Circuit {
-    private:
+    public:
         Graph magnitude_matrix; // magnitude_matrix[i][j] encodes the magnitude of the element connecting nodes i and j
         Graph type_matrix;      // type_matrix[i][j] encodes the type of the element connecting nodes i and j
         
@@ -89,21 +89,21 @@ class Circuit {
         
         */
     
-    public:
         int n_nodes;
-        
-        Circuit(int n, Graph mag = Graph(0), Graph typ = Graph(0)){
-            n_nodes = n;
-            int n_m = mag.n_nodes;
-            int n_t = typ.n_nodes;
 
-            if (n_m != n_t){ throw invalid_argument("Adjacency matrices do not share the same size"); }
-            else if (n_nodes <= 0){ throw invalid_argument("Number of nodes must be bigger than 0"); }
-            else if (n_m == 0){ mag.set_nodes(n_nodes); typ.set_nodes(n_nodes); }
+        Circuit(int n, Graph mag = Graph(), Graph typ = Graph()){
+            n_nodes = n;
+
+            if (n_nodes <= 0){ throw invalid_argument("Number of nodes must be bigger than 0"); }  
             
+            if (mag.n_nodes == 0 & typ.n_nodes == 0 ) { cout << "caiu aqui"; mag.set_nodes(n_nodes); typ.set_nodes(n_nodes); }
+
+            else if (mag.n_nodes != typ.n_nodes){ throw invalid_argument("Adjacency matrices do not share the same size"); }
+            else if (n_nodes != mag.n_nodes) {throw invalid_argument("Adjacency matrices size does not correspond to number of nodes passed"); }
+
             magnitude_matrix = mag;
             type_matrix = typ;
-            
+
             };
 
         bool verify(){
@@ -144,22 +144,51 @@ class Circuit {
 
 int main() {
 
-    Graph teste(5);
+    /*
+    Circuit Test = Circuit(5);
+
+    cout << endl << "The current size of the circuit is: " << Test.n_nodes << endl << endl;
+    cout << "The magnitude matrix of the circuit is: " << endl;
+    Test.magnitude_matrix.print_adj_matrix();
     
-    teste.set_matrix_values(0);
+    cout << endl;
 
-    //teste.add_connection(1,2, 10);
-   // teste.add_connection(3,4,20);
-    teste.set_diagonal(45);
+    cout << "The type matrix of the circuit is: " << endl;
+    Test.type_matrix.print_adj_matrix();
 
-    teste.print_adj_matrix();
-    cout << endl << "===========" << endl << endl;
-
-    teste.set_nodes(3);
+    cout << endl;
     
-    teste.print_adj_matrix();
-    
+    */
 
+   cout << endl;
+
+    Graph magnitudes = Graph(3);
+    Graph types = Graph(4);
+
+    magnitudes.set_matrix_values(0);
+    magnitudes.add_connection(1,2,5);
+    magnitudes.set_diagonal(1);
+
+    types.set_matrix_values(1);
+
+    magnitudes.print_adj_matrix();
+    cout << endl << endl;
+    types.print_adj_matrix();
+    cout << endl << endl;
+
+    cout << "=============" << endl;
+
+    Circuit Test = Circuit(2);
+
+    cout << endl;
+
+    Test.magnitude_matrix.print_adj_matrix();
+    cout << endl << endl;
+
+    Test.type_matrix.print_adj_matrix();
+    cout << endl << endl;
+    
+  
    return 0;
 }
 
