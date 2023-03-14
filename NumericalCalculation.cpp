@@ -12,19 +12,21 @@ class Graph {
             set_nodes(n);
         };
 
+        Graph() : n_nodes(0) {};
+
         void set_nodes(int n){
             // Update the number of nodes, and resize the adj matrix to be N x N. 
             n_nodes = n;
-            adjacency_matrix.resize(n_nodes);
+            adj.resize(n_nodes);
 
             for (int i = 0; i < n_nodes; ++i){
-                adjacency_matrix[i].resize(n_nodes);
+                adj[i].resize(n_nodes);
             }
 
         };
 
         void add_connection(int A, int B, int X){
-            adjacency_matrix[A][B] = X;
+            adj[A][B] = X;
         };
 
         void add_connection_sym(int A, int B, int X){
@@ -48,7 +50,7 @@ class Graph {
         };
 
         void print_adj_matrix(){
-            for (vector<int> i : adjacency_matrix){
+            for (vector<int> i : adj){
                 for (int j : i){
                     if (j == 0)
                     { cout << "-";}
@@ -61,8 +63,7 @@ class Graph {
                 };
             };
 
-    private:
-        vector<vector<int> > adjacency_matrix;   // Describes the connections of the respective nodes
+        vector<vector<int> > adj;   // Adjacency Matrix. Describes the connections of the respective nodes
 
 
 };
@@ -124,8 +125,8 @@ class Circuit {
 
             for (int i = 0 ; i < n_nodes ; i++ ){
                 for (int j = 0 ; j < n_nodes ; j++){
-                    if (magnitude_matrix[i][j] != 0 & type_matrix[i][j] == 0){ state = false; }
-                    else if (type_matrix[i][j] != 0 & magnitude_matrix[i][j] == 0){ state = false; }
+                    if (magnitude_matrix.adj[i][j] != 0 & type_matrix.adj[i][j] == 0){ state = false; }
+                    else if (type_matrix.adj[i][j] != 0 & magnitude_matrix.adj[i][j] == 0){ state = false; }
                     };
                 };
             
