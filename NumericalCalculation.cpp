@@ -228,22 +228,24 @@ public:
 
         // Add connection to the magnitude and type matrices.
 
+        int X = B; // CHANGE
+
         // Voltage and current sources are considered separately.
         // For passive elements, the matrices are filled symmetrically
         if (element_type != 'v' & element_type != 'i')
         {
-            magnitude_matrix.add_edge_sym(A, B, magnitude);
-            type_matrix.add_edge_sym(A, B, type_code);
+            magnitude_matrix.add_edge_sym(A, X, magnitude);
+            type_matrix.add_edge_sym(A, X, type_code);
         }
 
         // For active elements, a negative sign is added to the magnitude of connection B -> A
         else
         {
-            magnitude_matrix.add_edge(A, B, magnitude);
-            type_matrix.add_edge(A, B, type_code);
+            magnitude_matrix.add_edge(A, X, magnitude);
+            type_matrix.add_edge(A, X, type_code);
 
-            magnitude_matrix.add_edge(B, A, -magnitude);
-            type_matrix.add_edge(B, A, type_code);
+            magnitude_matrix.add_edge(X, A, -magnitude);
+            type_matrix.add_edge(X, A, type_code);
         }
     };
 };
