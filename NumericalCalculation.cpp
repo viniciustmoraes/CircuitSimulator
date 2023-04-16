@@ -228,7 +228,22 @@ public:
 
         // Add connection to the magnitude and type matrices.
 
-        int X = B; // CHANGE
+        int X;
+
+        // No previous connections exist between A and B
+        if (type_matrix.adj[A][B] == 0)
+        {
+            X = B;
+        }
+
+        else // If a connection exists, then perform a parallel connection addition
+        {
+            // Adds a new dummy node at the end of the list, and shorts it with B. The desired connection is performed between this node and A
+            resize(n_nodes + 1);
+            X = n_nodes - 1;
+
+            add_connection(B, X, 'w', 0);
+        }
 
         // Voltage and current sources are considered separately.
         // For passive elements, the matrices are filled symmetrically
@@ -238,7 +253,7 @@ public:
             type_matrix.add_edge_sym(A, X, type_code);
         }
 
-        // For active elements, a negative sign is added to the magnitude of connection B -> A
+        // For active elements, a negative sign is added to the magnitude of connection X -> A
         else
         {
             magnitude_matrix.add_edge(A, X, magnitude);
@@ -258,8 +273,8 @@ int main()
     Circuit Test = Circuit(4);
 
     Test.add_connection(0, 2, 'r', 10);
-    Test.add_connection(2, 3, 'w', 4);
-    Test.add_connection(3, 1, 'v', 13);
+    Test.add_connection(2, 3, 'c', 4);
+    Test.add_connection(0, 2, 'l', 13);
 
     // ======================== PRINTING ==========================
 
