@@ -1,6 +1,8 @@
+import argparse
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+import ast
 
 
 def circuitplot(mag_matrix, type_matrix):
@@ -35,8 +37,9 @@ def circuitplot(mag_matrix, type_matrix):
     # Determines the nodes positions using the spring algorithm
     # pos is a dictionnary where the nodes are the keys to the respective positions, stored as a 2D array
     # For instance pos = {0: array([-0.37799656,  0.42002144]), 1: array([-0.23313452,  0.57997856]), 2: array([ 0.61113108, -1.])}
-#   pos = nx.spring_layout(G)
-    pos = nx.circular_layout(G)
+
+    pos = nx.spring_layout(G)
+    # pos = nx.circular_layout(G)
 
     x, y = [], []
 
@@ -74,30 +77,24 @@ def circuitplot(mag_matrix, type_matrix):
             ax.annotate(txt, (mid_x+0.01, mid_y+0.01))
 
     plt.axis('off')
-    plt.title('Simulated Circuit')
     plt.show()
 
     return
 
 
-# testing
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Visualization Launcher')
+    parser.add_argument('--mag', type=str,
+                        help='Magnitude adjacency matrix in string format')
+    parser.add_argument('--type', type=str,
+                        help='Type adjacency matrix in string format')
 
+    args = parser.parse_args()
 
-circuitplot(mag, type)
+    mag = args.mag
+    mag = ast.literal_eval(mag)
 
+    type = args.type
+    type = ast.literal_eval(type)
 
-'''
-fig, ax = plt.subplots()
-
-# Draw nodes
-nx.draw_networkx_nodes(G, pos, ax=ax, node_color='b', node_size=300)
-
-# Draw edges
-nx.draw_networkx_edges(G, pos, ax=ax, edge_color='k', width=2)
-
-ax.text(0, 0, 'Text at (2, 25)', fontsize=12, color='red')
-
-
-plt.show()
-
-'''
+    circuitplot(mag, type)

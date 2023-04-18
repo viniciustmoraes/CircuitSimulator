@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdexcept>
 #include <map>
+#include <cstdlib>
 using namespace std;
 
 class Graph
@@ -236,6 +237,21 @@ public:
 
     };
 
+    void circuit_to_figure()
+    {
+
+        string command = "python3 visualize.py --mag " + magnitude_matrix.adj_matrix_to_list() + " --type " + type_matrix.adj_matrix_to_list();
+
+        // Execute the Python script with arguments
+        int returnCode = system(command.c_str());
+
+        // Check the return code for any errors
+        if (returnCode == -1)
+        {
+            throw runtime_error("Error while executing python script for circuit representation");
+        }
+    };
+
     void add_connection(int A, int B, char element_type, float magnitude)
     {
         // Adds a simple connection to nodes A and B, of type and magnitude specified.
@@ -311,7 +327,8 @@ int main()
 
     Test.add_connection(0, 2, 'r', 10);
     Test.add_connection(2, 3, 'c', 4);
-    // Test.add_connection(0, 2, 'l', 13);
+    Test.add_connection(1, 2, 'l', 13);
+    Test.add_connection(1, 3, 'w', 1111);
 
     // ======================== PRINTING ==========================
 
@@ -327,9 +344,7 @@ int main()
     cout << endl
          << endl;
 
-    cout << "mag = " << Test.magnitude_matrix.adj_matrix_to_list() << endl
-         << "type = " << Test.type_matrix.adj_matrix_to_list() << endl
-         << endl;
+    Test.circuit_to_figure();
 
     return 0;
 };
