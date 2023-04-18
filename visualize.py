@@ -15,9 +15,6 @@ def circuitplot(mag_matrix, type_matrix):
     else:
         n_nodes = len(mag_matrix)
 
-    # Encodes the integer element types in letters
-    dict_elements = {0: '', 1: 'w', 2: 'R', 3: 'C', 4: 'L', 5: 'V', 6: 'I'}
-
     # Creates an empty nx graph
     G = nx.Graph()
 
@@ -38,7 +35,8 @@ def circuitplot(mag_matrix, type_matrix):
     # Determines the nodes positions using the spring algorithm
     # pos is a dictionnary where the nodes are the keys to the respective positions, stored as a 2D array
     # For instance pos = {0: array([-0.37799656,  0.42002144]), 1: array([-0.23313452,  0.57997856]), 2: array([ 0.61113108, -1.])}
-    pos = nx.spring_layout(G)
+#   pos = nx.spring_layout(G)
+    pos = nx.circular_layout(G)
 
     x, y = [], []
 
@@ -48,7 +46,13 @@ def circuitplot(mag_matrix, type_matrix):
 
     fig, ax = plt.subplots()
 
-    ax.scatter(x, y, c='k', marker='o', s=10, label='Nodes')
+    for i in range(len(x)):
+        ax.annotate(f"N{i}", (x[i]+0.015, y[i]+0.015))
+
+    ax.scatter(x, y, c='k', marker='o', s=20, label='Nodes')
+
+    # Encodes the integer element types in letters
+    dict_elements = {0: '', 1: 'w', 2: 'R', 3: 'C', 4: 'L', 5: 'V', 6: 'I'}
 
     for connection in edges:
         start_node = connection[0]
@@ -56,31 +60,40 @@ def circuitplot(mag_matrix, type_matrix):
         element_type = dict_elements[connection[2]]
         magnitude = connection[3]
 
-        # Plot lines with black solid line
+        # Plot black solid lines connecting the nodes with edges
         ax.plot([x[start_node], x[end_node]], [y[start_node],
                 y[end_node]], 'k-', lw=2, label=element_type)
 
-        mid_x = (x[start_node] + x[end_node]) / \
-            2  # Calculate midpoint x-coordinate
-        mid_y = (y[start_node] + y[end_node]) / \
-            2  # Calculate midpoint y-coordinate
+        # Calculate midpoint x-coordinate
+        mid_x = (x[start_node] + x[end_node])*0.5
+        # Calculate midpoint y-coordinate
+        mid_y = (y[start_node] + y[end_node])*0.5
 
         if element_type != 'w':
             txt = f"{element_type} = {magnitude}"
-            ax.annotate(txt, (mid_x, mid_y))
+            ax.annotate(txt, (mid_x+0.01, mid_y+0.01))
+            print(f"Anotei o seguinte: {txt}")
 
+    plt.axis('off')
+    plt.title('Simulated Circuit')
     plt.show()
 
     return
 
 
 # testing
-mag = [[0, 0,]]
-G, pos = circuitplot([[0, 1, 0], [1, 0, 0], [0, 0, 0]],
-                     [[0, 4, 0], [4, 0, 0], [0, 0, 0]])
+mag = [[0, 0, 10, 0],
+       [0, 0,  0, 0],
+       [10, 0, 0, 4],
+       [0, 0,  4, 0]]
 
+type = [[0, 0, 2, 0],
+        [0, 0, 0, 0],
+        [2, 0, 0, 3],
+        [0, 0, 3, 0]]
 
-print(pos)
+circuitplot(mag, type)
+
 
 '''
 fig, ax = plt.subplots()
