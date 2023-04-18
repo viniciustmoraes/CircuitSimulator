@@ -34,9 +34,22 @@ def circuitplot(mag_matrix, type_matrix):
 
     # Determines the nodes positions using the spring algorithm
     # pos is a dictionnary where the nodes are the keys to the respective positions, stored as a 2D array
+    # For instance pos = {0: array([-0.37799656,  0.42002144]), 1: array([-0.23313452,  0.57997856]), 2: array([ 0.61113108, -1.])}
     pos = nx.spring_layout(G)
 
-    return G, pos
+    x, y = [], []
+
+    for position in list(pos.values()):
+        x.append(position[0])
+        y.append(position[1])
+
+    fig, ax = plt.subplots()
+
+    ax.scatter(x, y, c='k', marker='o', s=10, label='Nodes')
+
+    plt.show()
+
+    return
 
 
 G, pos = circuitplot([[0, 1, 0], [1, 0, 0], [0, 0, 0]],
