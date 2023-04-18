@@ -72,7 +72,6 @@ def circuitplot(mag_matrix, type_matrix):
         if element_type != 'w':
             txt = f"{element_type} = {magnitude}"
             ax.annotate(txt, (mid_x+0.01, mid_y+0.01))
-            print(f"Anotei o seguinte: {txt}")
 
     plt.axis('off')
     plt.title('Simulated Circuit')
@@ -82,15 +81,7 @@ def circuitplot(mag_matrix, type_matrix):
 
 
 # testing
-mag = [[0, 0, 10, 0],
-       [0, 0,  0, 0],
-       [10, 0, 0, 4],
-       [0, 0,  4, 0]]
 
-type = [[0, 0, 2, 0],
-        [0, 0, 0, 0],
-        [2, 0, 0, 3],
-        [0, 0, 3, 0]]
 
 circuitplot(mag, type)
 

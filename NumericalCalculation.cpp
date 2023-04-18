@@ -85,6 +85,43 @@ public:
         };
     };
 
+    string adj_matrix_to_list()
+    {
+        int k = 1;
+        string adj_list = "[";
+        for (vector<float> i : adj)
+        {
+            adj_list.append("[");
+
+            int p = 1;
+
+            for (float j : i)
+            {
+                adj_list.append(to_string(j));
+
+                if (p != n_nodes)
+                {
+                    adj_list.append(",");
+                }
+
+                p++;
+            };
+
+            adj_list.append("]");
+
+            if (k != n_nodes)
+            {
+                adj_list.append(",");
+            }
+
+            k++;
+        };
+
+        adj_list.append("]");
+
+        return adj_list;
+    }
+
     vector<vector<float>> adj; // Adjacency Matrix. Describes the connections of the respective nodes
 };
 
@@ -274,7 +311,7 @@ int main()
 
     Test.add_connection(0, 2, 'r', 10);
     Test.add_connection(2, 3, 'c', 4);
-    //   Test.add_connection(0, 2, 'l', 13);
+    // Test.add_connection(0, 2, 'l', 13);
 
     // ======================== PRINTING ==========================
 
@@ -288,6 +325,10 @@ int main()
 
     Test.type_matrix.print_adj_matrix();
     cout << endl
+         << endl;
+
+    cout << "mag = " << Test.magnitude_matrix.adj_matrix_to_list() << endl
+         << "type = " << Test.type_matrix.adj_matrix_to_list() << endl
          << endl;
 
     return 0;
