@@ -15,6 +15,9 @@ def circuitplot(mag_matrix, type_matrix):
     else:
         n_nodes = len(mag_matrix)
 
+    # Encodes the integer element types in letters
+    dict_elements = {0: '', 1: 'w', 2: 'R', 3: 'C', 4: 'L', 5: 'V', 6: 'I'}
+
     # Creates an empty nx graph
     G = nx.Graph()
 
@@ -22,13 +25,13 @@ def circuitplot(mag_matrix, type_matrix):
     for i in range(n_nodes):
         G.add_node(i)
 
-    connections_list = []
+    edges = []
 
     for i in range(n_nodes):
         for j in range(n_nodes):
             if type_matrix[i][j] != 0:
-                if ([i, j] not in connections_list) and ([j, i] not in connections_list):
-                    connections_list.append([i, j])
+                if ([i, j, type_matrix[i][j], mag_matrix[i][j]] not in edges) and ([j, i, type_matrix[i][j], mag_matrix[i][j]] not in edges):
+                    edges.append([i, j, type_matrix[i][j], mag_matrix[i][j]])
 
                     G.add_edge(i, j)
 
@@ -47,11 +50,32 @@ def circuitplot(mag_matrix, type_matrix):
 
     ax.scatter(x, y, c='k', marker='o', s=10, label='Nodes')
 
+    for connection in edges:
+        start_node = connection[0]
+        end_node = connection[1]
+        element_type = dict_elements[connection[2]]
+        magnitude = connection[3]
+
+        # Plot lines with black solid line
+        ax.plot([x[start_node], x[end_node]], [y[start_node],
+                y[end_node]], 'k-', lw=2, label=element_type)
+
+        mid_x = (x[start_node] + x[end_node]) / \
+            2  # Calculate midpoint x-coordinate
+        mid_y = (y[start_node] + y[end_node]) / \
+            2  # Calculate midpoint y-coordinate
+
+        if element_type != 'w':
+            txt = f"{element_type} = {magnitude}"
+            ax.annotate(txt, (mid_x, mid_y))
+
     plt.show()
 
     return
 
 
+# testing
+mag = [[0, 0,]]
 G, pos = circuitplot([[0, 1, 0], [1, 0, 0], [0, 0, 0]],
                      [[0, 4, 0], [4, 0, 0], [0, 0, 0]])
 
