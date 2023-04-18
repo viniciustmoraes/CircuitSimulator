@@ -274,7 +274,7 @@ int main()
 
     Test.add_connection(0, 2, 'r', 10);
     Test.add_connection(2, 3, 'c', 4);
-    Test.add_connection(0, 2, 'l', 13);
+    //   Test.add_connection(0, 2, 'l', 13);
 
     // ======================== PRINTING ==========================
 
