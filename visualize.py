@@ -25,10 +25,18 @@ def circuitplot(mag_matrix, type_matrix):
         G.add_node(i)
 
     edges = []
+    sources = []
 
     for i in range(n_nodes):
         for j in range(n_nodes):
             type = type_matrix[i][j]
+
+            if (type == 5 or type == 6) and ([i, j] not in sources) and ([j, i] not in sources):
+
+                if mag_matrix[i][j] >= 0:
+                    sources.append([i, j])
+                else:
+                    sources.append([j, i])
 
             if type != 0 and ([i, j, type_matrix[i][j], mag_matrix[i][j]] not in edges) and ([j, i, type_matrix[j][i], mag_matrix[j][i]] not in edges):
                 edges.append([i, j, type_matrix[i][j], abs(mag_matrix[i][j])])
@@ -74,7 +82,24 @@ def circuitplot(mag_matrix, type_matrix):
 
         if element_type != 'w':
             txt = f"{element_type} = {magnitude}"
-            ax.annotate(txt, (mid_x+0.01, mid_y+0.01))
+            ax.annotate(txt, (mid_x+0.01, mid_y+0.01),
+                        fontsize=12, color='gray')
+
+    print('sources: ')
+    print(sources)
+
+    for nodes in sources:
+        positive_node = nodes[0]
+        negative_node = nodes[1]
+
+        plus_x = (3*x[positive_node] + x[negative_node])*0.25
+        plus_y = (3*y[positive_node] + y[negative_node])*0.25
+
+        minus_x = (x[positive_node] + 3*x[negative_node])*0.25
+        minus_y = (y[positive_node] + 3*y[negative_node])*0.25
+
+        ax.annotate("+", (plus_x+0.01, plus_y), color='blue', fontsize=14)
+        ax.annotate("-", (minus_x+0.01, minus_y), color='red', fontsize=14)
 
     plt.axis('off')
     plt.show()
