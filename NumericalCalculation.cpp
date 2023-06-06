@@ -326,9 +326,10 @@ int main()
     Circuit Test = Circuit(4);
 
     Test.add_connection(0, 2, 'r', 10);
-    Test.add_connection(2, 3, 'c', 4);
-    Test.add_connection(1, 2, 'l', 13);
+    Test.add_connection(2, 3, 'r', 4);
+    Test.add_connection(1, 2, 'r', 13);
     Test.add_connection(1, 3, 'w', 1111);
+    Test.add_connection(3, 0, 'v', 1);
 
     // ======================== PRINTING ==========================
 

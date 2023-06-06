@@ -28,11 +28,11 @@ def circuitplot(mag_matrix, type_matrix):
 
     for i in range(n_nodes):
         for j in range(n_nodes):
-            if type_matrix[i][j] != 0:
-                if ([i, j, type_matrix[i][j], mag_matrix[i][j]] not in edges) and ([j, i, type_matrix[i][j], mag_matrix[i][j]] not in edges):
-                    edges.append([i, j, type_matrix[i][j], mag_matrix[i][j]])
+            type = type_matrix[i][j]
 
-                    G.add_edge(i, j)
+            if type != 0 and ([i, j, type_matrix[i][j], mag_matrix[i][j]] not in edges) and ([j, i, type_matrix[j][i], mag_matrix[j][i]] not in edges):
+                edges.append([i, j, type_matrix[i][j], abs(mag_matrix[i][j])])
+                G.add_edge(i, j)
 
     # Determines the nodes positions using the spring algorithm
     # pos is a dictionnary where the nodes are the keys to the respective positions, stored as a 2D array
