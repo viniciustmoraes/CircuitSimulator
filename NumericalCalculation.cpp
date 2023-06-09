@@ -328,7 +328,7 @@ public:
 
 vector<vector<float>> adj;
 
-pair<vector<vector<float>>, vector<vector<float>>> nodal(Circuit circuit)
+pair<vector<vector<float>>, vector<float>> nodal(Circuit circuit)
 {
     /*
     Nodal Analysis Implementation
@@ -336,19 +336,35 @@ pair<vector<vector<float>>, vector<vector<float>>> nodal(Circuit circuit)
     Takes as an input the circuit, and outputs matrices A and B of the linear system Av = B, where v is the vector formed by the
     voltage variables.
     */
-    vector<vector<float>> matrixA;
-    vector<vector<float>> matrixB;
+    vector<vector<float>> matrixA(circuit.n_nodes, vector<float>(circuit.n_nodes));
+    vector<float> matrixB(circuit.n_nodes);
 
-    circuit.ground_node;
-    for (int i = 0; i < circuit.n_nodes; i++)
+    // Sets ground line
+    // MatrixA Ground
+    for (int j = 0; j < circuit.n_nodes; j++)
     {
-        for (int j = 0; j < circuit.n_nodes; j++)
+        if (j == circuit.ground_node)
         {
-            circuit.type_matrix.adj[i][j];
-        };
-
-        i++;
+            matrixA[circuit.ground_node][j] = 1;
+        }
+        else
+        {
+            matrixA[circuit.ground_node][j] = 0;
+        }
     };
+
+    // MatrixB Ground
+    matrixB[circuit.ground_node] = 0;
+
+    // for (int i = 0; i < circuit.n_nodes; i++)
+    // {
+    //     for (int j = 0; j < circuit.n_nodes; j++)
+    //     {
+    //         circuit.type_matrix.adj[i][j];
+    //     };
+
+    //     i++;
+    // };
 
     return make_pair(matrixA, matrixB);
 }
@@ -366,6 +382,8 @@ int main()
     Test.add_connection(1, 3, 'w', 1111);
     Test.add_connection(3, 0, 'v', 1);
 
+    Test.set_ground(0);
+
     // ======================== PRINTING ==========================
 
     cout << endl
@@ -377,10 +395,37 @@ int main()
          << "Type Matrix" << endl;
 
     Test.type_matrix.print_adj_matrix();
-    cout << endl
-         << endl;
+    cout << endl;
 
-    Test.circuit_to_figure();
+    // Test.circuit_to_figure();
+
+    auto result = nodal(Test);
+    vector<vector<float>> A = result.first;
+    vector<float> B = result.second;
+
+    cout << endl
+         << "matrix A: " << endl;
+
+    for (vector<float> i : A)
+    {
+        for (float j : i)
+        {
+
+            cout << j;
+
+            cout << " ";
+        };
+        cout << endl;
+    };
+
+    cout << endl
+         << "matrix B: " << endl;
+
+    for (float i : B)
+    {
+        cout << i;
+        cout << endl;
+    };
 
     return 0;
 };
