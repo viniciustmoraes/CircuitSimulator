@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <map>
 #include <cstdlib>
+#include <utility>
 using namespace std;
 
 class Graph
@@ -131,6 +132,7 @@ class Circuit
 public:
     Graph magnitude_matrix; // magnitude_matrix[i][j] encodes the magnitude of the element connecting nodes i and j
     Graph type_matrix;      // type_matrix[i][j] encodes the type of the element connecting nodes i and j
+    int ground_node;        // Index of the node conected to ground.
 
     /*
 
@@ -178,10 +180,16 @@ public:
 
         magnitude_matrix = mag;
         type_matrix = typ;
+        ground_node = 0;
     };
 
     ~Circuit(){
         // Empty destructor
+    };
+
+    void set_ground(int n)
+    {
+        ground_node = n;
     };
 
     void resize(int n)
@@ -317,6 +325,33 @@ public:
         }
     };
 };
+
+vector<vector<float>> adj;
+
+pair<vector<vector<float>>, vector<vector<float>>> nodal(Circuit circuit)
+{
+    /*
+    Nodal Analysis Implementation
+
+    Takes as an input the circuit, and outputs matrices A and B of the linear system Av = B, where v is the vector formed by the
+    voltage variables.
+    */
+    vector<vector<float>> matrixA;
+    vector<vector<float>> matrixB;
+
+    circuit.ground_node;
+    for (int i = 0; i < circuit.n_nodes; i++)
+    {
+        for (int j = 0; j < circuit.n_nodes; j++)
+        {
+            circuit.type_matrix.adj[i][j];
+        };
+
+        i++;
+    };
+
+    return make_pair(matrixA, matrixB);
+}
 
 int main()
 {

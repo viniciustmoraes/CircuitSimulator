@@ -85,9 +85,6 @@ def circuitplot(mag_matrix, type_matrix):
             ax.annotate(txt, (mid_x+0.01, mid_y+0.01),
                         fontsize=12, color='gray')
 
-    print('sources: ')
-    print(sources)
-
     for nodes in sources:
         positive_node = nodes[0]
         negative_node = nodes[1]
