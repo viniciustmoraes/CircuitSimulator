@@ -339,32 +339,39 @@ pair<vector<vector<float>>, vector<float>> nodal(Circuit circuit)
     vector<vector<float>> matrixA(circuit.n_nodes, vector<float>(circuit.n_nodes));
     vector<float> matrixB(circuit.n_nodes);
 
-    // Sets ground line
-    // MatrixA Ground
-    for (int j = 0; j < circuit.n_nodes; j++)
+    for (int i = 0; i = circuit.n_nodes; i++)
     {
-        if (j == circuit.ground_node)
+        // Sets ground line
+        if (i == circuit.ground_node)
         {
-            matrixA[circuit.ground_node][j] = 1;
+            // MatrixA Ground
+            for (int j = 0; j < circuit.n_nodes; j++)
+            {
+                if (j == circuit.ground_node)
+                {
+                    matrixA[circuit.ground_node][j] = 1;
+                }
+                else
+                {
+                    matrixA[circuit.ground_node][j] = 0;
+                }
+            };
+
+            // MatrixB Ground
+            matrixB[circuit.ground_node] = 0;
         }
+
         else
         {
-            matrixA[circuit.ground_node][j] = 0;
+            vector<float> connections_type = circuit.type_matrix.adj[i];
+
+            for (int j = i; j < circuit.n_nodes; j++)
+            {
+
+                // IMPLEMENTAR A MATRIZ NO CASO GERAL
+            };
         }
     };
-
-    // MatrixB Ground
-    matrixB[circuit.ground_node] = 0;
-
-    // for (int i = 0; i < circuit.n_nodes; i++)
-    // {
-    //     for (int j = 0; j < circuit.n_nodes; j++)
-    //     {
-    //         circuit.type_matrix.adj[i][j];
-    //     };
-
-    //     i++;
-    // };
 
     return make_pair(matrixA, matrixB);
 }
